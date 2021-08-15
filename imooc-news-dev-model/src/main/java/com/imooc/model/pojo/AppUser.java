@@ -1,5 +1,8 @@
 package com.imooc.model.pojo;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -76,12 +79,14 @@ public class AppUser {
      * 创建时间 创建时间
      */
     @Column(name = "created_time")
+    @CreatedDate
     private Date createdTime;
 
     /**
      * 更新时间 更新时间
      */
     @Column(name = "updated_time")
+    @LastModifiedDate
     private Date updatedTime;
 
     /**

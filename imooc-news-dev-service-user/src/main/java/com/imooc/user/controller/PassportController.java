@@ -3,16 +3,20 @@ package com.imooc.user.controller;
 import com.imooc.api.constants.Constants;
 import com.imooc.api.controller.user.PassportControllerApi;
 import com.imooc.common.bo.RegistryLoginBO;
+import com.imooc.common.enums.UserStatus;
 import com.imooc.common.result.InvokeResult;
 import com.imooc.common.result.ResponseEnum;
 import com.imooc.common.utils.RedisOperator;
 import com.imooc.common.utils.SMSUtils;
+import com.imooc.model.pojo.AppUser;
+import com.imooc.user.service.UserService;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.Objects;
 
 /**
  * @author: shiwenwei
@@ -27,6 +31,9 @@ public class PassportController implements PassportControllerApi {
 
     @Setter(onMethod_ = @Autowired)
     private RedisOperator redis;
+
+    @Setter(onMethod_ = @Autowired)
+    private UserService userService;
 
     @Override
     public InvokeResult<?> getSMSCode(String mobile) {
@@ -46,6 +53,17 @@ public class PassportController implements PassportControllerApi {
                 || !redisSmsCode.equals(registryLoginBO.getSmsCode())) {
             return InvokeResult.exception(ResponseEnum.SMS_CODE_ERROR);
         }
-        return InvokeResult.ok();
+
+        // 判断用户是否注册
+        AppUser appUser = userService.queryMobileIsExist(registryLoginBO.getMobile());
+        if (appUser == null) {
+            appUser = userService.createUser(registryLoginBO.getMobile());
+        } else {
+            if (Objects.equals(appUser.getActiveStatus(), UserStatus.FROZEN.type)) {
+                return InvokeResult.exception(ResponseEnum.USER_FROZEN);
+            }
+        }
+
+        return InvokeResult.ok(appUser);
     }
 }
