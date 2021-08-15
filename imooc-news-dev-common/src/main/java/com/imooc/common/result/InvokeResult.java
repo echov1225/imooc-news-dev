@@ -1,9 +1,7 @@
 package com.imooc.common.result;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
-import java.time.LocalDateTime;
 import java.util.Map;
 
 /**
@@ -32,10 +30,6 @@ public class InvokeResult<T> {
     // 是否成功
     private Boolean success;
 
-    // 返回时间
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime time = LocalDateTime.now();
-
     // 响应数据，可以是Object，也可以是List或Map等
     private T data;
 
@@ -51,7 +45,7 @@ public class InvokeResult<T> {
      * 成功返回，不带有数据的，直接调用ok方法，data无须传入（其实就是null）
      * @return
      */
-    public static InvokeResult<?> ok() {
+    public static <K> InvokeResult<K> ok() {
         return new InvokeResult<>(ResponseEnum.SUCCESS);
     }
     public InvokeResult(T data) {
@@ -66,7 +60,7 @@ public class InvokeResult<T> {
      * 错误返回，直接调用error方法即可，当然也可以在ResponseStatusEnum中自定义错误后再返回也都可以
      * @return
      */
-    public static InvokeResult<?> error() {
+    public static <K> InvokeResult<K> error() {
         return new InvokeResult<>(ResponseEnum.FAILED);
     }
 
@@ -91,7 +85,7 @@ public class InvokeResult<T> {
      * @param msg
      * @return
      */
-    public static InvokeResult<?> errorMsg(String msg) {
+    public static <K> InvokeResult<K> errorMsg(String msg) {
         return new InvokeResult<>(ResponseEnum.FAILED, msg);
     }
 
@@ -99,7 +93,7 @@ public class InvokeResult<T> {
      * 错误返回，token异常，一些通用的可以在这里统一定义
      * @return
      */
-    public static InvokeResult<?> errorTicket() {
+    public static <K> InvokeResult<K> errorTicket() {
         return new InvokeResult<>(ResponseEnum.TICKET_INVALID);
     }
 
@@ -108,10 +102,10 @@ public class InvokeResult<T> {
      * @param responseStatus
      * @return
      */
-    public static InvokeResult<?> errorCustom(ResponseEnum responseStatus) {
+    public static <K> InvokeResult<K> errorCustom(ResponseEnum responseStatus) {
         return new InvokeResult<>(responseStatus);
     }
-    public static InvokeResult<?> exception(ResponseEnum responseStatus) {
+    public static <K> InvokeResult<K> exception(ResponseEnum responseStatus) {
         return new InvokeResult<>(responseStatus);
     }
 

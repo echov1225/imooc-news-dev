@@ -2,7 +2,7 @@ package com.imooc.user.controller;
 
 import com.imooc.api.constants.Constants;
 import com.imooc.api.controller.user.PassportControllerApi;
-import com.imooc.common.bo.RegistryLoginBO;
+import com.imooc.model.bo.RegistryLoginBO;
 import com.imooc.common.enums.UserStatus;
 import com.imooc.common.result.InvokeResult;
 import com.imooc.common.result.ResponseEnum;
@@ -53,7 +53,7 @@ public class PassportController implements PassportControllerApi {
     }
 
     @Override
-    public InvokeResult<?> doLogin(@Valid RegistryLoginBO registryLoginBO, HttpServletResponse response) {
+    public InvokeResult<Integer> doLogin(@Valid RegistryLoginBO registryLoginBO, HttpServletResponse response) {
         // 判断验证码是否合法
         String redisSmsCode = redis.get(Constants.Redis.MOBILE_SMS_CODE + registryLoginBO.getMobile());
         if (StringUtils.isEmpty(redisSmsCode)

@@ -1,6 +1,6 @@
 package com.imooc.api.controller.user;
 
-import com.imooc.common.bo.RegistryLoginBO;
+import com.imooc.model.bo.RegistryLoginBO;
 import com.imooc.common.result.InvokeResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -23,6 +23,6 @@ public interface PassportControllerApi {
 
     @ApiOperation(value = "一键注册登录", notes = "一键注册登录", httpMethod = "POST")
     @PostMapping("doLogin")
-    InvokeResult<?> doLogin(@RequestBody RegistryLoginBO registryLoginBO, HttpServletResponse response);
+    InvokeResult<Integer> doLogin(@RequestBody RegistryLoginBO registryLoginBO, HttpServletResponse response);
 
 }

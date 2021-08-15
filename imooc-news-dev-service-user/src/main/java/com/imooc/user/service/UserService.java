@@ -19,4 +19,8 @@ public interface UserService {
      */
     AppUser createUser(String mobile);
 
+    /**
+     * 查询用户
+     */
+    AppUser getUser(String userId);
 }

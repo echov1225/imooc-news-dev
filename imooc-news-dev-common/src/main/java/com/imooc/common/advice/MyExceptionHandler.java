@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
@@ -22,7 +23,7 @@ import java.util.Map;
 public class MyExceptionHandler {
 
     @ResponseBody
-    @org.springframework.web.bind.annotation.ExceptionHandler(MyCustomException.class)
+    @ExceptionHandler(MyCustomException.class)
     public InvokeResult<?> handler(MyCustomException e) {
         if (log.isErrorEnabled()) {
             log.error(e.getMessage(), e);
@@ -31,7 +32,16 @@ public class MyExceptionHandler {
     }
 
     @ResponseBody
-    @org.springframework.web.bind.annotation.ExceptionHandler(MethodArgumentNotValidException.class)
+    @ExceptionHandler(Exception.class)
+    public InvokeResult<?> handler(Exception e) {
+        if (log.isErrorEnabled()) {
+            log.error(e.getMessage(), e);
+        }
+        return InvokeResult.exception(ResponseEnum.SYSTEM_OPERATION_ERROR);
+    }
+
+    @ResponseBody
+    @ExceptionHandler(MethodArgumentNotValidException.class)
     public InvokeResult<?> handler(MethodArgumentNotValidException e) {
         if (log.isErrorEnabled()) {
             log.error(e.getMessage(), e);
