@@ -1,5 +1,6 @@
 package com.imooc.user.service;
 
+import com.imooc.model.bo.UpdateUserInfoBO;
 import com.imooc.model.pojo.AppUser;
 
 /**
@@ -23,4 +24,9 @@ public interface UserService {
      * 查询用户
      */
     AppUser getUser(String userId);
+
+    /**
+     * 用户信息修改，完善资料，并激活
+     */
+    void updateUserInfo(UpdateUserInfoBO updateUserInfoBO);
 }

@@ -2,6 +2,7 @@ package com.imooc.user.controller;
 
 import com.imooc.api.controller.user.UserControllerApi;
 import com.imooc.common.result.InvokeResult;
+import com.imooc.model.bo.UpdateUserInfoBO;
 import com.imooc.model.pojo.AppUser;
 import com.imooc.model.vo.UserAccountInfoVO;
 import com.imooc.user.service.UserService;
@@ -10,6 +11,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -33,5 +35,11 @@ public class UserController implements UserControllerApi {
         BeanUtils.copyProperties(user, accountInfoVO);
 
         return InvokeResult.ok(accountInfoVO);
+    }
+
+    @Override
+    public InvokeResult<?> updateUserInfo(@Valid UpdateUserInfoBO updateUserInfoBO) {
+        userService.updateUserInfo(updateUserInfoBO);
+        return InvokeResult.ok();
     }
 }

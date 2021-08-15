@@ -2,13 +2,18 @@ package com.imooc.user.service.impl;
 
 import com.imooc.common.enums.Sex;
 import com.imooc.common.enums.UserStatus;
+import com.imooc.common.exception.MyCustomException;
+import com.imooc.common.result.InvokeResult;
+import com.imooc.common.result.ResponseEnum;
 import com.imooc.common.utils.DateUtil;
 import com.imooc.common.utils.DesensitizationUtil;
+import com.imooc.model.bo.UpdateUserInfoBO;
 import com.imooc.model.pojo.AppUser;
 import com.imooc.user.mapper.AppUserMapper;
 import com.imooc.user.service.UserService;
 import lombok.Setter;
 import org.n3r.idworker.Sid;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
@@ -70,5 +75,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public AppUser getUser(String userId) {
         return appUserMapper.selectByPrimaryKey(userId);
+    }
+
+    @Override
+    public void updateUserInfo(UpdateUserInfoBO updateUserInfoBO) {
+        AppUser userInfo = new AppUser();
+        BeanUtils.copyProperties(updateUserInfoBO, userInfo);
+        userInfo.setActiveStatus(UserStatus.ACTIVE.type);
+        int result = appUserMapper.updateByPrimaryKeySelective(userInfo);
+
+        if(result != 1) {
+            throw new MyCustomException(ResponseEnum.USER_UPDATE_ERROR);
+        }
     }
 }
