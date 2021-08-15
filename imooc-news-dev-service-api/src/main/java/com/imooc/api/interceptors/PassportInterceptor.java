@@ -30,11 +30,11 @@ public class PassportInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         // 获取用户IP
         String ip = IPUtil.getRequestIp(request);
-        if (redis.keyIsExist(Constants.MOBILE_SMS_CODE + ip)) {
+        if (redis.keyIsExist(Constants.Redis.MOBILE_SMS_CODE + ip)) {
             throw new MyCustomException(ResponseEnum.SMS_NEED_WAIT_ERROR);
         }
         // 根据用户ip限制用户60s内只能获得一次验证码
-        redis.setnx60s(Constants.MOBILE_SMS_CODE + ip, ip);
+        redis.setnx60s(Constants.Redis.MOBILE_SMS_CODE + ip, ip);
         return HandlerInterceptor.super.preHandle(request, response, handler);
     }
 

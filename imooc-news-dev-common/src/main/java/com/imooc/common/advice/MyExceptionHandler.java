@@ -1,5 +1,6 @@
-package com.imooc.common.exception;
+package com.imooc.common.advice;
 
+import com.imooc.common.exception.MyCustomException;
 import com.imooc.common.result.InvokeResult;
 import com.imooc.common.result.ResponseEnum;
 import lombok.extern.slf4j.Slf4j;
@@ -13,12 +14,21 @@ import java.util.Map;
 
 /**
  * @author: shiwenwei
- * @date: 2021/7/3 3:17 PM
+ * @date: 2021/8/15 4:25 PM
  * @since v1.0
  */
 @Slf4j
 @ControllerAdvice
-public class MethodArgumentNotValidExceptionHandler {
+public class MyExceptionHandler {
+
+    @ResponseBody
+    @org.springframework.web.bind.annotation.ExceptionHandler(MyCustomException.class)
+    public InvokeResult<?> handler(MyCustomException e) {
+        if (log.isErrorEnabled()) {
+            log.error(e.getMessage(), e);
+        }
+        return InvokeResult.exception(e.getResponseEnum());
+    }
 
     @ResponseBody
     @org.springframework.web.bind.annotation.ExceptionHandler(MethodArgumentNotValidException.class)

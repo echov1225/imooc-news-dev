@@ -6,6 +6,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * @author: shiwenwei
  * @date: 2021/5/30 6:41 PM
@@ -21,6 +23,6 @@ public interface PassportControllerApi {
 
     @ApiOperation(value = "一键注册登录", notes = "一键注册登录", httpMethod = "POST")
     @PostMapping("doLogin")
-    InvokeResult<?> doLogin(@RequestBody RegistryLoginBO registryLoginBO);
+    InvokeResult<?> doLogin(@RequestBody RegistryLoginBO registryLoginBO, HttpServletResponse response);
 
 }
