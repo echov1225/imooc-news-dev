@@ -13,6 +13,8 @@ public interface Constants {
 
         String USER_TOKEN = "user_token:";
 
+        String REDIS_USER_INFO = "user_info:";
+
     }
 
     interface Cookie {
